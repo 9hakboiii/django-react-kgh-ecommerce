@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
-import MainPage from '../ui/pages/MainPage';
+import MainLayout from '../ui/layouts/MainLayout';
 
 const routes = [
   {
     path: '/',
-    element: <MainPage></MainPage>,
+    element: <MainLayout></MainLayout>,
     loader: () => '메인페이지',
   },
 ];
