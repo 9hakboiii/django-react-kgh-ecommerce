@@ -1,4 +1,5 @@
-import { createBrowerRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
+import MainPage from '../ui/pages/MainPage';
 
 const routes = [
   {
@@ -8,6 +9,6 @@ const routes = [
   },
 ];
 
-const router = createBrowerRouter(routes);
+const router = createBrowserRouter(routes);
 
 export { router, routes };
