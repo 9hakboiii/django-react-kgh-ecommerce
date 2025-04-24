@@ -1,4 +1,7 @@
 import React from 'react';
+// dev_2_fruit
+import heroImg1 from '@/assets/fruits/img/hero-img-1.png';
+import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
 
 // dev_2_fruit
 const Header = () => {
@@ -169,17 +172,14 @@ const Header = () => {
               <div id="carouselId" className="carousel slide position-relative" data-bs-ride="carousel">
                 <div className="carousel-inner" role="listbox">
                   <div className="carousel-item active rounded">
-                    <img
-                      src="img/hero-img-1.png"
-                      className="img-fluid w-100 h-100 bg-secondary rounded"
-                      alt="First slide"
-                    />
+                    {/* dev_2_fruit */}
+                    <img src={heroImg1} className="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide" />
                     <a href="#" className="btn px-4 py-2 text-white rounded">
                       Fruites
                     </a>
                   </div>
                   <div className="carousel-item rounded">
-                    <img src="img/hero-img-2.jpg" className="img-fluid w-100 h-100 rounded" alt="Second slide" />
+                    <img src={heroImg2} className="img-fluid w-100 h-100 rounded" alt="Second slide" />
                     <a href="#" className="btn px-4 py-2 text-white rounded">
                       Vesitables
                     </a>

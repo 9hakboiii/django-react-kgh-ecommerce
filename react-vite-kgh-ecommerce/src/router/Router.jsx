@@ -1,11 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../ui/layouts/MainLayout';
+import Products from '@/ui/components/fruits/products';
 
 const routes = [
   {
     path: '/',
     element: <MainLayout></MainLayout>,
     loader: () => '메인페이지',
+    children: [
+      {
+        path: '',
+        element: <Products></Products>,
+        loader: () => '상품들',
+      },
+    ],
   },
 ];
 
