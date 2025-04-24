@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCategories } from 'ui/api/CategoryApi';
 
 const Products = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategories()
+      .then((res) => {
+        console.log(res);
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
       {/* Fruits Shop Start*/}
