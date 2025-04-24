@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCategories } from 'ui/api/CategoryApi';
+import { getCategories } from '@/ui/api/CategoryApi';
 
 const Products = () => {
   const [categories, setCategories] = useState([]);
@@ -7,12 +7,10 @@ const Products = () => {
   useEffect(() => {
     getCategories()
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         setCategories(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.error(err));
   }, []);
 
   return (
