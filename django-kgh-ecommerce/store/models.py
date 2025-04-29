@@ -28,7 +28,7 @@ class Product(models.Model):
     )  # DB에선 카테고리 ID로 저장
     # dev_6
     is_sale = models.BooleanField(default=False)  # 할인 여부
-    sale_price = models.IntegerField(default=0)  # 할인 가격
+    sale_price = models.IntegerField(default=0, blank=True, null=True)  # 할인 가격
 
     def __str__(self):
         return self.name
