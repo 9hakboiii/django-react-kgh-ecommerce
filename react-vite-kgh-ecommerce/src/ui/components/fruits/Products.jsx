@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { getCategories } from '@/ui/api/CategoryApi';
 
+// dev_2_fruits
 const Products = () => {
+  // 화면 갱신을 위한 데이터(state)
+  // state 변수 = state가 변할때 마다 해당 컴포넌트를 다시 그림 = 다시 컴포넌트를 실행
   const [categories, setCategories] = useState([]);
 
+  // 빈 배열: 처음 랜더링 때 한 번만 호출
   useEffect(() => {
+    // 카테고리 가져오기
     getCategories()
       .then((res) => {
         console.log(res.data);
@@ -28,38 +33,21 @@ const Products = () => {
                   <li className="nav-item">
                     <a className="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
                       <span className="text-dark" style={{ width: 130 }}>
-                        All Products
+                        {'전체'}
                       </span>
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a className="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Vegetables
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Fruits
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Bread
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Meat
-                      </span>
-                    </a>
-                  </li>
+                  {/* dev_3_fruits */}
+                  {categories &&
+                    categories.map((categories, index) => (
+                      <li className="nav-item">
+                        <a className="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                          <span className="text-dark" style={{ width: 130 }}>
+                            {categories.name}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
