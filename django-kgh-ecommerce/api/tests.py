@@ -1,120 +1,58 @@
-import pickle
+# Create your tests here.
 from django.test import TestCase
+import jwt
 
-# dev_35
+
+# dev_5_Fruit
+# 🔍 해석
+# 필드	          의미	                 값 해석
+# exp	Expiration Time (만료 시간)	1744884869 → UTC 기준 2025-05-17 07:34:29 에 토큰 만료
+# iat	Issued At (발급 시각)	1744280069 → UTC 기준 2025-05-10 07:34:29 에 토큰 발급
+# jti	JWT ID (토큰 고유 ID)	"01fdf4faad8c4a17bd9f038aeb052d5b" → 이 토큰을 식별하기 위한 고유한 ID (무작위 UUID처럼 사용)
+
+
+class ApiTest(TestCase):
+    def test_jwt_decode_access_token(self):
+        access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MDY0MDM4LCJpYXQiOjE3NDYwNjM4NTgsImp0aSI6IjkwNTViMzkyYmFkYTRlMjY4OGEyZjg4ZWM5N2VlMDg5IiwidXNlcl9pZCI6MX0.lk70FYQCWlVoewhWrNWckVVfpbk7j0b822_u8_MNKN4"
+        refresh_token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjY2ODY1OCwiaWF0IjoxNzQ2MDYzODU4LCJqdGkiOiIzNzljZGM5ODkxZmM0N2VjOTA3YWM2MmEyNmFlY2YzOSIsInVzZXJfaWQiOjF9.iYWWlKbeKhAzIujCnOw9GE3ThO-KqRtF7TFs4bSucMM"
+
+        print("\n▶ ACCESS TOKEN 디코딩 결과:")
+        access_decoded = jwt.decode(access_token, options={"verify_signature": False})
+        for key, value in access_decoded.items():
+            print(f"{key}: {value}")
+
+        print("\n▶ REFRESH TOKEN 디코딩 결과:")
+        refresh_decoded = jwt.decode(refresh_token, options={"verify_signature": False})
+        for key, value in refresh_decoded.items():
+            print(f"{key}: {value}")
+
+        # 기본적인 체크
+        self.assertEqual(access_decoded["token_type"], "access")
+        self.assertEqual(refresh_decoded["token_type"], "refresh")
+        self.assertEqual(access_decoded["user_id"], 1)
+        self.assertEqual(refresh_decoded["user_id"], 1)
+
+
+from rest_framework.test import APITestCase
 from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from api.serializers.category_serializers import (
-    CategorySerializer,
-    CategorySimpleSerializer,
-)
-from store.models import Category
 
 
-# dev_28 직렬화의 이해
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.area = width * height
-
-
-def add(num1, num2):
-    return num1 + num2
-
-
-def sub(num1, num2):
-    return num1 - num2
-
-
-class ObjectAPITest(TestCase):
+class UserMeAPITest(APITestCase):
     def setUp(self):
-        pass
+        # 이미 발급받은 토큰을 여기에 넣으세요
+        self.access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0MjgzMTcyLCJpYXQiOjE3NDQyODEzNzIsImp0aSI6ImQzYzE5MWYzZjRhYzQ0MmE4NTU0YzIyOGQ1ZGM5ZjhiIiwidXNlcl9pZCI6MX0.BlLTY1T1mUyB4t2BKgGE2YaY6LXnrIHfvogJ9RtB-wo"
+        self.url = "http://127.0.0.1:8000/api/auth/users/me/"
 
-    def test_path(self):
+    def test_get_user_me(self):
+        # Authorization 헤더에 JWT 토큰 포함
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
-        dict = {
-            "add": add,
-            "sub": sub,
-        }
-        url = "add"
-        print(dict[url](1, 2))
+        response = self.client.get(self.url)
 
-        url = "sub"
-        print(dict[url](2, 1))
+        print("🔎 응답 JSON:", response.json())
 
-    # 시각형 rect 객체를 직렬화
-    def test_serialization(self):
-        rect = Rectangle(10, 20)
+        # 테스트: 200 OK 확인
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        with open("rect.data", "wb") as f:
-            pickle.dump(
-                rect, f
-            )  # 하드디스크(cpu)에 rect 내용을 바이너리 코드로 변환하여 저장
-            print(f)
-
-        # 역직렬화
-        with open("rect.data", "rb") as f:
-            r = pickle.load(f)  # 직렬화된 파일을 역직렬화 하여 내용을 r에 저장
-            print(r)
-
-        print(r.width, r.height)
-
-
-# dev_35
-# self를 활용한(객체 지향) APIView 구조
-class CategoriesAPI(APIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    simple_serializer_class = CategorySimpleSerializer
-
-    def get_queryset(self):
-        return self.queryset
-
-    def get_serializer(self, args, **kwargs):
-        return self.serializer_class(args, kwargs)
-
-    def get_simple_serializer(self, *args, kwargs):
-        return self.simple_serializer_class(*args, **kwargs)
-
-    def get(self, request):
-        categories = self.get_queryset()
-        serializer = self.get_serializer(categories, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = self.get_simple_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request):
-        # 예: id를 request에서 받았다고 가정
-        category_id = request.data.get("id")
-        try:
-            category = self.get_queryset().get(id=category_id)
-        except Category.DoesNotExist:
-            return Response(
-                {"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = self.get_simple_serializer(category, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request):
-        category_id = request.data.get("id")
-        try:
-            category = self.get_queryset().get(id=category_id)
-            category.delete()
-            return Response(
-                {"message": "Category deleted"}, status=status.HTTP_204_NO_CONTENT
-            )
-        except Category.DoesNotExist:
-            return Response(
-                {"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+        # 테스트: 사용자 정보에 username 포함 여부
+        self.assertIn("username", response.data)

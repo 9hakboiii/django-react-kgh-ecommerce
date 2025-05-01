@@ -61,4 +61,8 @@ urlpatterns = [
     path("", include(router.urls)),
     # path("categories/", category_list),
     # path("category/<int:pk>", category_detail),
+
+    # dev_5_fruit
+    path("auth/", include("djoser.urls")), # 회원가입, 비밀번호 변경 등
+    path("auth/", include("djoser.urls.jwt")) # JWT 로그인/로그아웃, 토큰 갱신 등
 ]
