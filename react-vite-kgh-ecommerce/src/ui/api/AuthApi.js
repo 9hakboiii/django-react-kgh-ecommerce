@@ -15,7 +15,7 @@ export const loginUser = (username, password) => {
   });
 };
 
-// 현재 로그인된 사용자 조회
+//현재 로그인된 사용자 조회
 export const getCurrentUser = () => {
-  return http.post('/api/auth/users/me/', {});
+  return http.get('/api/auth/users/me/');
 };

@@ -1,6 +1,7 @@
+import { getCurrentUser, loginUser } from '@/ui/api/AuthApi';
 import { createContext, useContext, useState } from 'react';
-import { loginUser } from '@/ui/api/AuthApi';
 
+//dev_5_Fruit
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -21,11 +22,12 @@ export const AuthProvider = ({ children }) => {
       // 2. session storage : 브라우저를 닫으면 데이터가 사라짐. (임시적)
       // 3. cookie : 서버와 클라이언트가 공유하는 데이터. (영구적)
       // 4. memory : 메모리에 저장되는 데이터. (임시적)
+
       localStorage.setItem('access', access);
       localStorage.setItem('refresh', refresh);
-      setAccessToken(access); // 메모리에 access toeken을 저장함
+      setAccessToken(access);
 
-      // 로그인이 된 후 로그인 정보를 받아서 어디서든 로그인 정보를 공유할 수 있게 함
+      //로그인이 된후 로그인 정보를 받아서 어디서든 로그인 정보를 공유 할수 있게 함
       await getUser();
     } catch (error) {
       console.error('로그인 실패', error);
@@ -39,12 +41,12 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       console.log(response.data);
     } catch (error) {
-      console.errer('사용자 정보 받아오기 실패', error);
+      console.error('사용자 정보 받아오기 실패', error);
       logout();
     }
   };
 
-  // 로그아웃시 로컬에 저장된 access token과 refresh token을 삭제함
+  //로그아웃시 로컬에 저장된 access 토큰과 refresh 토큰을 삭제만 하면됨
   const logout = () => {
     setUser(null);
     setAccessToken(null);
@@ -52,7 +54,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('refresh');
   };
 
-  // 자식에게 전달할 값
   const value = {
     logout,
     login,

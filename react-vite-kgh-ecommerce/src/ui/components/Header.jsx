@@ -2,9 +2,20 @@ import React from 'react';
 // dev_2_fruit
 import heroImg1 from '@/assets/fruits/img/hero-img-1.png';
 import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
+// dev_5_fruit
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 // dev_2_fruit
 const Header = () => {
+  // dev_5_fruit
+  const { user, logout } = useAuth();
+  console.log(user);
+
+  const logoutHandle = () => {
+    logout();
+  };
+
   return (
     <>
       {/* Spinner Start */}
@@ -29,7 +40,16 @@ const Header = () => {
               <small className="me-3">
                 <i className="fas fa-envelope me-2 text-secondary" />
                 <a href="#" className="text-white">
-                  Email@Example.com
+                  {/* dev_5_fruit */}
+                  {user ? (
+                    <span className="text-white" style={{ cursor: 'pointer' }} onClick={logoutHandle}>
+                      {user.username}님 환영합니다.
+                    </span>
+                  ) : (
+                    <Link to="/login" className="text-white">
+                      로그인을 해주세요
+                    </Link>
+                  )}
                 </a>
               </small>
             </div>
