@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '/src/assets/login/css/login.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 // dev_5_fruit
 const Login = () => {
@@ -8,15 +9,15 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const auth = useAuth(); // AuthContext에서 auth 객체를 가져옵니다.
+  const { login } = useAuth(); // AuthContext에서 auth 객체를 가져옵니다.
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
       // 동기 통신
-      await Login(username, password);
-      alert('로그인 성공');
+      await login(username, password);
+      alert('✅ 로그인 성공');
       // 로그인 성공 후 루트로 이동
       navigate('/'); // windows.location.href = '/';
     } catch (error) {

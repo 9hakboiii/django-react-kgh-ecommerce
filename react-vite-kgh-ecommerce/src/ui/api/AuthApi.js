@@ -1,5 +1,6 @@
 import http from './HttpCommon';
 
+// dev_5_fruit
 // # 경로    설명
 // # POST /auth/jwt/create/    로그인 (토큰 발급)
 // # POST /auth/jwt/refresh/    액세스 토큰 갱신
@@ -8,8 +9,13 @@ import http from './HttpCommon';
 // # GET /auth/users/me/    현재 로그인된 사용자 조회
 //http://127.0.0.1:8000/api/
 export const loginUser = (username, password) => {
-  return http.post("/api/auth/jwt/create/", {
+  return http.post('/api/auth/jwt/create/', {
     username,
     password,
-  })
+  });
+};
+
+// 현재 로그인된 사용자 조회
+export const getCurrentUser = () => {
+  return http.post('/api/auth/users/me/', {});
 };
