@@ -257,7 +257,7 @@ from datetime import timedelta
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3), # timedalta (minutes=30) 
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_TYPES": ("Bearer",), # 헤더 이름을 JWT로 하면 Auth type을 JWT Bearer로 설정(postman)
 }
 
 # djoser 커스텀마이징 세팅
