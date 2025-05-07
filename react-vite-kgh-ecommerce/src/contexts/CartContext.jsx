@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthContext'
+import { getCarts, mergeCart } from '@/ui/api/CartApi'
 
+//dev_6_Fruits
 const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
@@ -15,19 +17,54 @@ export const CartProvider = ({ children }) => {
     }
   }, [cartItems, user])
 
+  //로그인시 카트를 병합
+  //병합 순서
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      //로그인이 되면
+      //로컬에 저장된 카트를 서버로 보내어 서버에서 로컬에 저장된 카트를 병합
+      if (user) {
+        const guestCart = JSON.parse(localStorage.getItem('cart') || '{}')
+        try {
+          if (Object.keys(guestCart).length > 0) {
+            await mergeCart(localStorage.getItem('cart'))
+            localStorage.removeItem('cart')
+          }
+
+          //병합 작업이 끝난후 서버에서 카트를 다시 로드함
+          loadCart()
+        } catch (error) {
+          console.error('장바구니 병합/불러오기 실패', error)
+        }
+      }
+    }
+    fetchCart()
+  }, [user])
+
+  //장바구니 불러오기
+  const loadCart = async () => {
+    try {
+      const response = await getCarts()
+
+      console.log('카트=========')
+      console.log(response)
+      // 서버 응답: 배열일 경우 변환
+      const cartData = {}
+      response.data.cart.forEach((item) => {
+        cartData[item.product.id] = {
+          quantity: item.quantity,
+          price: item.price,
+        }
+      })
+
+      setCartItems(cartData)
+    } catch (error) {
+      console.error('❌ 장바구니 불러오기 실패', error)
+    }
+  }
+
   const getTotalItems = () => {
-    // 방법 1: for문을 사용하여 장바구니에 담긴 상품의 총 개수를 계산
-    // keys, values, entries, assign, hasOwnPropert
-    // let total = 0;
-    // const items = Object.values(cartItems); // 상품 객체들을 배열로 가져옴
-
-    // for (let i = 0; i < items.length; i++) {
-    //   total += items[i].quantity; // 각 상품의 수량을 누적
-    // }
-
-    // 방법 2
-    // Object.values(cartItems)로 cartItems 객체의 값만 추출하여 배열로 변환 (js에서 Object.values() 메서드 사용)
-    // reduce() 메서드를 사용하여 배열의 각 요소를 누적하여 총 개수를 계산
     return Object.values(cartItems).reduce((acc, item) => acc + item.quantity, 0)
   }
 

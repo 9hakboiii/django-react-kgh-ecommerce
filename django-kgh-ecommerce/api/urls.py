@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import base_views, product_views, category_views
+from .views import base_views, product_views, category_views, cart_views
 
 # dev_28
 app_name = "api"
@@ -64,5 +64,8 @@ urlpatterns = [
 
     # dev_5_fruit
     path("auth/", include("djoser.urls")), # 회원가입, 비밀번호 변경 등
-    path("auth/", include("djoser.urls.jwt")) # JWT 로그인/로그아웃, 토큰 갱신 등
+    path("auth/", include("djoser.urls.jwt")), # JWT 로그인/로그아웃, 토큰 갱신 등
+    # dev_6_fruit
+    path("cart/", cart_views.CartAPIView.as_view()),
+    path("cart/merge/", cart_views.CartMergeAPIView.as_view()),
 ]
