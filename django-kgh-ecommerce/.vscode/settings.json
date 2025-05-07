@@ -20,5 +20,6 @@
         }
     ],
     "postman.settings.dotenv-detection-notification-visibility": false,
+    "semi": false, 
 }
 

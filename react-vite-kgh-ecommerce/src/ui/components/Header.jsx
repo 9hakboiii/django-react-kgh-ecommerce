@@ -1,20 +1,24 @@
-import React from 'react';
+import React from 'react'
 // dev_2_fruit
-import heroImg1 from '@/assets/fruits/img/hero-img-1.png';
-import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
+import heroImg1 from '@/assets/fruits/img/hero-img-1.png'
+import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg'
 // dev_5_fruit
-import { useAuth } from '@/contexts/AuthContext';
-import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext'
+import { Link } from 'react-router-dom'
+import { useCart } from '@/contexts/CartContext'
 
 // dev_2_fruit
 const Header = () => {
   // dev_5_fruit
-  const { user, logout } = useAuth();
-  console.log(user);
+  const { user, logout } = useAuth()
+  console.log(user)
 
   const logoutHandle = () => {
-    logout();
-  };
+    logout()
+  }
+
+  // dev_6_fruit 장바구니 카트 숫자
+  const { getTotalItems } = useCart()
 
   return (
     <>
@@ -127,7 +131,8 @@ const Header = () => {
                     className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
                     style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}
                   >
-                    3
+                    {/* dev_6_fruit */}
+                    {getTotalItems()}
                   </span>
                 </a>
                 <a href="#" className="my-auto">
@@ -230,7 +235,7 @@ const Header = () => {
       </div>
       {/* Hero End */}
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

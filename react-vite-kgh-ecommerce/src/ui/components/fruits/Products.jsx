@@ -1,43 +1,46 @@
-import { getCategories } from '@/ui/api/CategoryApi';
-import { getProducts } from '@/ui/api/ProductApi';
-import { useEffect, useState } from 'react';
+import { getCategories } from '@/ui/api/CategoryApi'
+import { getProducts } from '@/ui/api/ProductApi'
+import { useCart } from '@/contexts/CartContext'
+import { useEffect, useState } from 'react'
 
 //dev_2_fruit
 const Products = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([])
   //dev_4_Fruit
-  const [selectedCategory, setSelectedCategory] = useState('전체');
-  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('전체')
+  const [products, setProducts] = useState([])
+  // dev_6_Fruit
+  const { addToCart } = useCart()
 
   useEffect(() => {
     //카테고리 가져오기
     getCategories()
       .then((res) => {
-        console.log(res);
-        setCategories(res.data);
+        console.log(res)
+        setCategories(res.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
 
     //dev_4_Fruit
     //상품 가져오기
     getProducts()
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data)
 
-        setProducts(res.data);
+        setProducts(res.data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])
 
   //filter 함수의 리턴값은 배열임
   const filterProuct =
     selectedCategory == '전체'
       ? products.filter((product) => product.image != null)
-      : products.filter((product) => product.category.name == selectedCategory && product.image);
+      : products.filter((product) => product.category.name == selectedCategory && product.image)
 
   return (
     <>
@@ -56,8 +59,8 @@ const Products = () => {
                       className="d-flex m-2 py-2 bg-light rounded-pill active"
                       data-bs-toggle="pill"
                       onClick={(event) => {
-                        event.preventDefault();
-                        setSelectedCategory('전체');
+                        event.preventDefault()
+                        setSelectedCategory('전체')
                       }}
                     >
                       <span className="text-dark" style={{ width: 130 }}>
@@ -73,9 +76,9 @@ const Products = () => {
                           className="d-flex py-2 m-2 bg-light rounded-pill"
                           data-bs-toggle="pill"
                           onClick={(event) => {
-                            event.preventDefault();
-                            setSelectedCategory(category.name);
-                            console.log(category.name);
+                            event.preventDefault()
+                            setSelectedCategory(category.name)
+                            console.log(category.name)
                           }}
                         >
                           <span className="text-dark" style={{ width: 130 }}>
@@ -116,9 +119,13 @@ const Products = () => {
                               </p>
                               <div className="d-flex flex-column align-items-center justify-content-between flex-lg-wrap">
                                 <p className="text-dark fs-5 fw-bold mb-2">${product.price} / kg</p>
-                                <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
+                                {/* dev_6_fruit */}
+                                <button
+                                  onClick={() => addToCart(product)}
+                                  className="btn border border-secondary rounded-pill px-3 text-primary"
+                                >
                                   <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart
-                                </a>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -373,7 +380,7 @@ const Products = () => {
       </div>
       {/* Fruits Shop End*/}
     </>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products
