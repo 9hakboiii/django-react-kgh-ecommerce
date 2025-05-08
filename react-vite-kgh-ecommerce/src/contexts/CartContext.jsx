@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthContext'
 import { getCarts, mergeCart } from '@/ui/api/CartApi'
 import { deleteCart } from '@/ui/api/CartApi'
+import { addCart } from '@/ui/api/CartApi'
 
 //dev_6_Fruits
 const CartContext = createContext()
@@ -83,7 +84,12 @@ export const CartProvider = ({ children }) => {
     const price = product.price
 
     if (user) {
+      // dev_7_fruit
       try {
+        const response = await addCart(productId, quantity)
+        console.log(response)
+
+        loadCart()
       } catch (err) {
         console.error('서버 장바구니 추가 실패', err)
       }

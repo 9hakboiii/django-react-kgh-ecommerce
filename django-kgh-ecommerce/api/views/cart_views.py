@@ -57,10 +57,28 @@ class CartAPIView(APIView):
             }
         )
 
-
+    # dev_7_Fruit
     def post(self,request):
-        pass
-    
+            """
+            장바구니에 상품 추가
+            """
+            product_id = request.data.get("product_id")
+            quantity = int(request.data.get("quantity",1))
+
+            cart = CartDRF(request)
+
+
+            try:
+                product = Product.objects.get(id=product_id)
+                price = product.sale_price if product.is_sale else product.price
+                cart.add_to_old_cart(request.user, product.id , price, quantity)
+
+                return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
+
+            except Product.DoesNotExist:
+                    return Response({"error": "상품이 존재하지 않습니다."}, status=404)
+
+
     def put(self,request):
         pass
 

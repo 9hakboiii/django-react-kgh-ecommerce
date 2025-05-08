@@ -24,6 +24,18 @@ function Cart() {
     removeFromCart(product.id)
   }
 
+  const handleIncrease = (item) => {
+    addToCart(item.product, 1)
+  }
+
+  const handleDecrease = (item) => {
+    if (item.quantity > 1) {
+      addToCart(item.product, -1)
+    } else if (item.quantity == 1) {
+      handleRemoveItem(item.product)
+    }
+  }
+
   return (
     <Fragment>
       <>
@@ -79,7 +91,10 @@ function Cart() {
                         <td>
                           <div className="input-group quantity mt-4" style={{ width: 100 }}>
                             <div className="input-group-btn">
-                              <button className="btn btn-sm btn-minus rounded-circle bg-light border">
+                              <button
+                                onClick={() => handleDecrease(item)}
+                                className="btn btn-sm btn-minus rounded-circle bg-light border"
+                              >
                                 <i className="fa fa-minus" />
                               </button>
                             </div>
@@ -89,7 +104,10 @@ function Cart() {
                               value={item.quantity}
                             />
                             <div className="input-group-btn">
-                              <button className="btn btn-sm btn-plus rounded-circle bg-light border">
+                              <button
+                                onClick={() => handleIncrease(item)}
+                                className="btn btn-sm btn-plus rounded-circle bg-light border"
+                              >
                                 <i className="fa fa-plus" />
                               </button>
                             </div>

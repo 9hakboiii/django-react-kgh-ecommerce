@@ -34,3 +34,11 @@ export const deleteCart = (product_id = null) => {
 
   return http.delete('/api/cart/', config)
 }
+
+// 장바구니에 상품 추가
+export const addCart = (product_id, quantity = 1) => {
+  return http.post('/api/cart/', {
+    product_id,
+    quantity,
+  })
+}
