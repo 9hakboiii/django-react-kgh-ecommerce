@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthContext'
 import { getCarts, mergeCart } from '@/ui/api/CartApi'
+import { deleteCart } from '@/ui/api/CartApi'
 
 //dev_6_Fruits
 const CartContext = createContext()
@@ -8,6 +9,9 @@ const CartContext = createContext()
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({})
   const { user } = useAuth()
+
+  // dev_7_fruit
+  const [userCart, setUserCart] = useState(null)
 
   // 비회원일 때 localStorage 저장
   useEffect(() => {
@@ -59,6 +63,11 @@ export const CartProvider = ({ children }) => {
       })
 
       setCartItems(cartData)
+
+      //dev_7_fruit
+      if (user) {
+        setUserCart(response.data)
+      }
     } catch (error) {
       console.error('❌ 장바구니 불러오기 실패', error)
     }
@@ -93,9 +102,25 @@ export const CartProvider = ({ children }) => {
     }
   }
 
+  // dev_7_fruit
+  // 항목 제거
+  const removeFromCart = async (productId) => {
+    if (user) {
+      try {
+        await deleteCart(productId)
+        await loadCart()
+        console.log('✅ 상품이 장바구니에서 제거되었습니다.')
+      } catch (error) {
+        console.error('장바구니에서 상품 제거 실패', error)
+      }
+    }
+  }
+
   return (
     <CartContext.Provider
       value={{
+        removeFromCart,
+        userCart,
         cartItems,
         addToCart,
         getTotalItems,

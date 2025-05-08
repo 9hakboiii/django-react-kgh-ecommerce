@@ -4,6 +4,9 @@ from django.contrib.sessions.backends.db import SessionStore
 from store.models import Product
 from decimal import Decimal
 from accounts.models import User
+import json
+from decimal import Decimal
+
 
 
 # dev_15
@@ -162,3 +165,27 @@ class Cart:  # 카트 클래스 생성
 
             except Exception as e:
                 print(f"❌ 복호화 실패 - 세션 키: {session.session_key}, 오류: {e}")
+
+
+#dev_7_Fruit
+ # ✅ old_cart 데이터 
+ # {
+ # "34": {"quantity": 1, "price": "10000.00"}, 
+ # "33": {"quantity": 1, "price": "12000.00"}
+ # }
+class CartDRF:
+
+    def __init__(self,reqeust):
+        self.request = reqeust
+
+    #상품 전제 삭제 메서드
+    def remove_from_old_cart(self,user,proudct_id):
+        old_cart = user.old_cart or "{}"
+        cart = json.loads(old_cart)
+
+        proudct_id = str(proudct_id)
+
+        if proudct_id in cart:
+            del cart[proudct_id]
+            user.old_cart = json.dumps(cart)
+            user.save()

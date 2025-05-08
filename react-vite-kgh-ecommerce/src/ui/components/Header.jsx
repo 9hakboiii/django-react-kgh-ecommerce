@@ -125,7 +125,8 @@ const Header = () => {
                 >
                   <i className="fas fa-search text-primary" />
                 </button>
-                <a href="#" className="position-relative me-4 my-auto">
+                {/* dev_7_fruit */}
+                <Link to="/cart" className="position-relative me-4 my-auto">
                   <i className="fa fa-shopping-bag fa-2x" />
                   <span
                     className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
@@ -134,7 +135,7 @@ const Header = () => {
                     {/* dev_6_fruit */}
                     {getTotalItems()}
                   </span>
-                </a>
+                </Link>
                 <a href="#" className="my-auto">
                   <i className="fas fa-user fa-2x" />
                 </a>
