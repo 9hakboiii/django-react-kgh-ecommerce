@@ -80,6 +80,7 @@ export const CartProvider = ({ children }) => {
       }
     } else {
       setCartItems((prev) => {
+        // 계산된 속성명 기능
         const existing = prev[productId]
         return {
           ...prev,
