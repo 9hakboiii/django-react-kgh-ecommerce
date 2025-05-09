@@ -4,6 +4,7 @@ import Products from '@/ui/components/fruits/products'
 import Login from '@/ui/components/login/Login'
 import Cart from '@/ui/components/fruits/Cart'
 import Hero from '@/ui/components/Hero'
+import CheckOut from '@/ui/components/fruits/CheckOut'
 
 const routes = [
   {
@@ -37,6 +38,12 @@ const routes = [
         path: 'cart',
         element: <Cart></Cart>,
         loader: () => '카트',
+      },
+      {
+        // dev_8_fruit
+        path: 'checkout',
+        element: <CheckOut></CheckOut>,
+        loader: () => '결제',
       },
     ],
   },

@@ -1,7 +1,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
 import React, { Fragment, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { formatCurrency } from '@/utils/format'
 
 // dev_7_fruit
@@ -159,12 +159,14 @@ function Cart() {
                     <h5 className="mb-0 ps-4 me-4">Total</h5>
                     <p className="mb-0 pe-4">{userCart && formatCurrency(userCart.cart_total_price)}원</p>
                   </div>
-                  <button
+                  {/* dev_8_fruit */}
+                  <Link
+                    to="/checkout"
                     className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
                     type="button"
                   >
-                    Proceed Checkout
-                  </button>
+                    결제페이지 이동
+                  </Link>
                 </div>
               </div>
             </div>
