@@ -3,6 +3,7 @@ import MainLayout from '../ui/layouts/MainLayout'
 import Products from '@/ui/components/fruits/products'
 import Login from '@/ui/components/login/Login'
 import Cart from '@/ui/components/fruits/Cart'
+import Hero from '@/ui/components/Hero'
 
 const routes = [
   {
@@ -12,13 +13,23 @@ const routes = [
     children: [
       {
         path: '',
-        element: <Products></Products>,
+        element: (
+          <div>
+            <Hero />
+            <Products></Products>
+          </div>
+        ),
         loader: () => '상품들',
       },
       {
         // dev_5_fruit
         path: 'login',
-        element: <Login></Login>,
+        element: (
+          <div>
+            <Hero />
+            <Login></Login>
+          </div>
+        ),
         loader: () => '상품들',
       },
       {
