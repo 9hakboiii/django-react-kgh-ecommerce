@@ -40,3 +40,6 @@ class User(AbstractUser):
     # dev_23
     # 장바구니 정보를 db에 저장 (session에 저장하는 것과는 다름)
     old_cart = models.CharField(max_length=200, blank=True, null=True)
+
+    # dev_9_1_Fruit
+    profile_image = models.URLField(blank=True, null=True)

@@ -1,7 +1,7 @@
 import { createPayment } from '@/api/PaymentApi'
 
 const RequestPay = (shippingData, cart = null, pg = 'kakaopay', pay_method = 'card') => {
-  const impCode = 'imp41272433' //상태코드
+  const impCode = import.meta.env.VITE_PORTONE_API //상태코드
 
   // const { cartItems } = useCart() 함수에서는 컨텍스트 호출 불가
   // Promise로 래핑하여 비동기 처리를 await로 받을 수 있도록 함
