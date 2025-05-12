@@ -1,5 +1,5 @@
-import { getCategories } from '@/ui/api/CategoryApi'
-import { getProducts } from '@/ui/api/ProductApi'
+import { getCategories } from '@/api/CategoryApi'
+import { getProducts } from '@/api/ProductApi'
 import { useCart } from '@/contexts/CartContext'
 import { useEffect, useState } from 'react'
 

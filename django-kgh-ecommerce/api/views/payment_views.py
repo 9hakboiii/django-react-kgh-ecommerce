@@ -64,7 +64,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
             print("3. 결제 저장 완료", payment)
 
             # 4. 응답 반환
-
             return Response(
                 {
                     "message":"결제 및 주문 저장 성공",
@@ -82,4 +81,4 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     "detail": "❌ 결제 처리 중 오류가 발생했습니다.",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
-            )
+            )    
