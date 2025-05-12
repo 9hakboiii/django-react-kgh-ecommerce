@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import base_views, product_views, category_views, cart_views
 
+
 # dev_28
 app_name = "api"
 
@@ -10,6 +11,15 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register("categories", category_views.CategoryViewSet)
+
+# dev_8_fruit
+# GET /api/payments/ – 전체 결제 내역
+# POST /api/payments/ – 결제 내역 생성
+# GET /api/payments/<id>/ – 단일 결제 조회
+# PUT/PATCH /api/payments/<id>/ – 수정
+# DELETE /api/payments/<id>/ – 삭제
+from api.views.payment_views import PaymentViewSet
+router.register("payments", PaymentViewSet)
 
 category_list = category_views.CategoryViewSet.as_view(
     {"get": "list", "post": "create"}

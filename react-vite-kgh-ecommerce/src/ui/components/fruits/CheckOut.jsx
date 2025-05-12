@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react'
 import { useCart } from '@/contexts/CartContext'
 import { formatCurrency, formatCurrencyWithWon } from '@/utils/format'
+import { useNavigate } from 'react-router-dom'
+import RequestPay from '../payment/RequestPay'
 
 const CheckOut = () => {
   // dev_8_fruit
@@ -24,6 +26,22 @@ const CheckOut = () => {
     // [name]: value]는 computed property name 문법으로, 객체의 속성 이름을 동적으로 설정할 수 있게 해줌
     // 예를 들어, name이 'address1'이라면 shippingData['address1']에 value를 할당함
     // name에 key가 없다면 동적으로 key를 생성하여 shippingData에 추가함
+  }
+
+  const navigate = useNavigate()
+
+  const handlePayment = async () => {
+    try {
+      const result = await RequestPay(shippingData, userCart)
+      if (result) {
+        alert('✅ 결재 및 주문이 성공적으로 완료되었습니다.')
+        console.log('결제 성공')
+        // clearCart() // 장바구니 비우기
+        navigate('/') // 결제 성공 후 홈으로 이동
+      }
+    } catch (error) {
+      console.error('결제 실패: ', error)
+    }
   }
 
   return (
@@ -323,8 +341,13 @@ const CheckOut = () => {
                     </div>
                   </div>
                   <div className="row g-4 text-center align-items-center justify-content-center pt-4">
-                    <button type="button" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
-                      Place Order
+                    {/* dev_8_fruit */}
+                    <button
+                      onClick={handlePayment}
+                      type="button"
+                      className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
+                    >
+                      카카오페이
                     </button>
                   </div>
                 </div>
