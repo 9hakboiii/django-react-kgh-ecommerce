@@ -1,17 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthContext'
-import { getCarts, mergeCart } from '@/ui/api/CartApi'
-import { deleteCart } from '@/ui/api/CartApi'
-import { addCart } from '@/ui/api/CartApi'
+import { addCart, deleteCart, getCarts, mergeCart } from '@/api/CartApi'
 
 //dev_6_Fruits
 const CartContext = createContext()
-
+//{
+// "34": {"quantity": 1, "price": "10000.00"},
+// "33": {"quantity": 1, "price": "12000.00"}
+//}
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({})
   const { user } = useAuth()
 
-  // dev_7_fruit
+  //dev_7_Fruit
   const [userCart, setUserCart] = useState(null)
 
   // 비회원일 때 localStorage 저장
@@ -65,7 +66,7 @@ export const CartProvider = ({ children }) => {
 
       setCartItems(cartData)
 
-      //dev_7_fruit
+      //dev_7_Fruit
       if (user) {
         setUserCart(response.data)
       }
@@ -82,11 +83,10 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     const productId = product.id
     const price = product.price
-
+    //dev_7_Fruit
     if (user) {
-      // dev_7_fruit
       try {
-        const response = await addCart(productId, quantity)
+        const response = await addCart(product.id, quantity)
         console.log(response)
 
         loadCart()
@@ -94,8 +94,11 @@ export const CartProvider = ({ children }) => {
         console.error('서버 장바구니 추가 실패', err)
       }
     } else {
+      //{
+      // "34": {"quantity": 1, "price": "10000.00"},
+      // "33": {"quantity": 1, "price": "12000.00"}
+      //}
       setCartItems((prev) => {
-        // 계산된 속성명 기능
         const existing = prev[productId]
         return {
           ...prev,
@@ -108,8 +111,8 @@ export const CartProvider = ({ children }) => {
     }
   }
 
-  // dev_7_fruit
-  // 항목 제거
+  //dev_7_Fruit
+  //항목 제거
   const removeFromCart = async (productId) => {
     if (user) {
       try {
@@ -117,19 +120,36 @@ export const CartProvider = ({ children }) => {
         await loadCart()
         console.log('✅ 상품이 장바구니에서 제거되었습니다.')
       } catch (error) {
-        console.error('장바구니에서 상품 제거 실패', error)
+        console.error('서버 장바구니 삭제 실패', error)
       }
+    }
+  }
+
+  // dev_8_2_Fruit
+  // 카트 전체 비우기
+  const clearCart = async () => {
+    if (user) {
+      try {
+        await deleteCart()
+        setCartItems({})
+      } catch (error) {
+        console.err('서버 장바구니 비우기 실패', error)
+      }
+    } else {
+      setCartItems({})
+      localStorage.removeItem('cart')
     }
   }
 
   return (
     <CartContext.Provider
       value={{
-        removeFromCart,
-        userCart,
+        removeFromCart, //dev_7_Fruit
+        userCart, //dev_7_Fruit
         cartItems,
         addToCart,
         getTotalItems,
+        clearCart,
       }}
     >
       {children}

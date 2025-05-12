@@ -16,7 +16,7 @@ const CheckOut = () => {
     email: '',
   })
 
-  const { userCart } = useCart()
+  const { userCart, clearCart } = useCart()
 
   const handleChange = (event) => {
     const [name, value] = event.target // event.target은 input 요소를 가리킴
@@ -33,10 +33,11 @@ const CheckOut = () => {
   const handlePayment = async () => {
     try {
       const result = await RequestPay(shippingData, userCart)
+
       if (result) {
         alert('✅ 결재 및 주문이 성공적으로 완료되었습니다.')
         console.log('결제 성공')
-        // clearCart() // 장바구니 비우기
+        clearCart() // 장바구니 비우기
         navigate('/') // 결제 성공 후 홈으로 이동
       }
     } catch (error) {

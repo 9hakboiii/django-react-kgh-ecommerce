@@ -1,3 +1,4 @@
+
 from rest_framework.views import APIView
 # ✅ 카트 API endpoint 예시:
 # HTTP       Method	       Endpoint	 기능
@@ -10,8 +11,6 @@ from decimal import Decimal
 from store.models import Product
 from api.serializers.product_serializers import ProductSerializer
 from cart.cart import CartDRF
-
-
 class CartAPIView(APIView):
     # permission_classes = [IsAuthenticated]
     
@@ -57,50 +56,60 @@ class CartAPIView(APIView):
             }
         )
 
-    # dev_7_Fruit
+
     def post(self,request):
-            """
-            장바구니에 상품 추가
-            """
-            product_id = request.data.get("product_id")
-            quantity = int(request.data.get("quantity",1))
+        """
+        장바구니에 상품 추가
+        """
+        product_id = request.data.get("product_id")
+        quantity = int(request.data.get("quantity",1))
 
-            cart = CartDRF(request)
+        cart = CartDRF(request)
+
+      
+        try:
+            product = Product.objects.get(id=product_id)
+            
+            price = product.sale_price if product.is_sale else product.price
+            cart.add_to_old_cart(request.user, product.id , price, quantity)
+            
+            return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
+        
+        except Product.DoesNotExist:
+                return Response({"error": "상품이 존재하지 않습니다."}, status=404)
 
 
-            try:
-                product = Product.objects.get(id=product_id)
-                price = product.sale_price if product.is_sale else product.price
-                cart.add_to_old_cart(request.user, product.id , price, quantity)
-
-                return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
-
-            except Product.DoesNotExist:
-                    return Response({"error": "상품이 존재하지 않습니다."}, status=404)
-
-
+         
+    
     def put(self,request):
         pass
 
-    # dev_7_Fruit
     def delete(self,request):
-            """
-            old_cart에서 상품 제거 또는 전체 삭제
-            """
-            user = request.user
-            print(request.data)
-            product_id = request.data.get("product_id")
+        """
+        old_cart에서 상품 제거 또는 전체 삭제
+        """
+        user = request.user       
+        product_id =  request.data.get("product_id")        
+        cart = CartDRF(request)
 
-            cart = CartDRF(request)
+        #특정 상품제외
+        if product_id:
+            try:
+                product = Product.objects.get(id=product_id)
+                cart.remove_from_old_cart(user,product_id)
+                return  Response({"message": "상품이 장바구니에서 제거되었습니다."}) 
+            except Product.DoesNotExist:
+                return Response({"error": "상품이 존재하지 않습니다."}, status=404)
+        #dev_8_2_Fruit
+        #전체 비우기
+        else:
+            user.old_cart = "{}"
+            user.save()
+            return Response({"message": "장바구니가 비워졌습니다."}) 
 
-            #특정 상품제외
-            if product_id:
-                try:
-                    product = Product.objects.get(id=product_id)
-                    cart.remove_from_old_cart(user,product_id)
-                    return  Response({"message": "상품이 장바구니에서 제거되었습니다."}) 
-                except Product.DoesNotExist:
-                    return Response({"error": "상품이 존재하지 않습니다."}, status=404)
+
+
+
 
 import json
 from rest_framework.permissions import IsAuthenticated
@@ -115,7 +124,7 @@ class CartMergeAPIView(APIView):
         localStorage의 장바구니를 서버 old_cart에 병합
         """
         user = request.user
-
+       
         local_storage_cart = request.data.get("cart","{}")
 
         local_storage_cart = json.loads(local_storage_cart or "{}")
