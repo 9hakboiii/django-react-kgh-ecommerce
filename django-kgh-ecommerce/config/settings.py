@@ -257,7 +257,9 @@ return (user, validated_token)
 """
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # dev_9_2_fruit
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication", 
     ),
 }
 
@@ -288,5 +290,14 @@ SOCIALACCOUNT_ADAPTER = "accounts.adapters.KakaoSocialAccountAdapter"
 # 3.0.0 버전 이상
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": False,
+    # dev_9_2_fruit
+    "JWT_AUTH_HTTPONLY": True, #refresh 토큰 : True 이면 refresh 토큰이 오지 않음
+    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token",
+    'JWT_AUTH_COOKIE_USE_CSRF' : True,
+    'SESSION_LOGIN' : False,
 }
+
+# dev_9_2_Fruit
+# 브라우저는 axios의 withCredentials: true 요청 시 쿠키를 포함해 전송
+CORS_ALLOW_CREDENTIALS = True
+

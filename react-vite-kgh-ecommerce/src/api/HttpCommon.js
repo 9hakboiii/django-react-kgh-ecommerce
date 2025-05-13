@@ -1,14 +1,15 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const accessToken = localStorage.getItem('access');
+const accessToken = localStorage.getItem('access')
 
 //dev_5_Fruit
 const http = axios.create({
   baseURL: import.meta.env.VITE_REQUEST_URL,
+  withCredentials: true, // ✅ 세션 쿠키도 같이 보냄 dev_9_2_Fruit
   headers: {
     Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
   },
-});
+})
 
 /*
 우선 로그인 시에 동작하는 flow를 정리하자면,
@@ -26,14 +27,14 @@ axios의 interceptor를 사용하면 요청이나 응답을 가로채서 처리�
 //요청 인터셉터 – 요청마다 access token 넣기
 http.interceptors.request.use(
   (config) => {
-    const access = localStorage.getItem('access');
+    const access = localStorage.getItem('access')
     if (access) {
-      config.headers['Authorization'] = `Bearer ${access}`;
+      config.headers['Authorization'] = `Bearer ${access}`
     }
-    return config;
+    return config
   },
   (error) => Promise.reject(error),
-);
+)
 
 // access 토큰 만료 및 재시도하지 않은 경우
 //🧩 1. error.response?.status === 401
@@ -54,31 +55,31 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    const originalRequest = error.config
 
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+      originalRequest._retry = true
 
       try {
-        const refresh = localStorage.getItem('refresh');
+        const refresh = localStorage.getItem('refresh')
         const res = await axios.post('http://127.0.0.1:8000/api/auth/jwt/refresh/', {
           refresh: refresh,
-        });
+        })
 
-        const newAccess = res.data.access;
-        localStorage.setItem('access', newAccess);
+        const newAccess = res.data.access
+        localStorage.setItem('access', newAccess)
 
         // Authorization 헤더 업데이트 후 원래 요청 다시 시도
-        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
-        return http(originalRequest);
+        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`
+        return http(originalRequest)
       } catch (refreshError) {
-        console.error('🔒 토큰 갱신 실패', refreshError);
+        console.error('🔒 토큰 갱신 실패', refreshError)
         // 실패하면 로그인 상태 초기화 로직 추가 가능
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error)
   },
-);
+)
 
-export default http;
+export default http
