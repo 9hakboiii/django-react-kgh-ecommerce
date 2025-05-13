@@ -95,11 +95,13 @@ urlpatterns = [
 # POST    /dj-rest-auth/password/reset/confirm/    비밀번호 초기화 완료
 # GET    /dj-rest-auth/user/    현재 로그인된 사용자 정보 가져오기
 # PUT/PATCH    /dj-rest-auth/user/    사용자 정보 수정
+
 # ✅ JWT 사용 시 추가 엔드포인트
 # (dj-rest-auth 설정에서 USE_JWT = True 설정한 경우)
 # HTTP Method    Endpoint URL    설명
 # POST    /dj-rest-auth/token/refresh/    access token 재발급
 # POST    /dj-rest-auth/token/verify/    JWT 유효성 검증
+
 # ✅ 소셜 로그인 시 추가 엔드포인트 (예: Kakao, Google 등)
 # allauth 및 dj-rest-auth.registration을 함께 설정해야 합니다.
 # HTTP Method    Endpoint URL    설명

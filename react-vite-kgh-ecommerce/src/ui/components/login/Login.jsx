@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import '/src/assets/login/css/login.css'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import axios from 'axios'
 
 // dev_5_fruit
 const Login = () => {
@@ -9,7 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const { login } = useAuth() // AuthContext에서 auth 객체를 가져옵니다.
+  // dev_9_1_fruit
+  const { login, getUser } = useAuth() // AuthContext에서 auth 객체를 가져옵니다.
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -43,8 +45,26 @@ const Login = () => {
       scope: 'profile_nickname, account_email, gender', // 원하는 scope
       success: async function (authObj) {
         const kakaoAccessToken = authObj.access_token
-
         console.log('Kakao Access Token:', kakaoAccessToken)
+
+        try {
+          let response = await axios.post(`${import.meta.env.VITE_REQUEST_URL}/api/dj-rest-auth/kakao/`, {
+            access_token: kakaoAccessToken,
+          })
+          console.log('로그인 성공', response.data)
+
+          // JWT 저장 및 로그인 상태 업데이트
+          localStorage.setItem('access', response.data.access)
+          localStorage.setItem('refresh', response.data.refresh)
+
+          // 유점님 환영 합니다-처리
+          response = await getUser()
+
+          console.log(response)
+          navigate('/') // ← 로그인 성공 후 홈으로 리다이렉트
+        } catch (error) {
+          console.log('카카오 로그인 실패', error)
+        }
       },
     })
   }
