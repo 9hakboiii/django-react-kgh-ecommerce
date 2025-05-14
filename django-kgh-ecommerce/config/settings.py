@@ -260,8 +260,15 @@ SOCIALACCOUNT_PROVIDERS = {
 #토큰에서 사용자 ID를 추출하고, 해당 사용자를 DB에서 가져옴
 #해당 사용자를 request.user에 할당
 #DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정 
-    
+
+
+# dev_10_fruit
+# http://127.0.0.1:8000/api/product-list/?page=2
+
+# Django_REST_Framework
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
     "DEFAULT_AUTHENTICATION_CLASSES": (
         #"rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication", #dev_9_2_Fruit

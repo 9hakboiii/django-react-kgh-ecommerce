@@ -22,6 +22,10 @@ router.register("categories", category_views.CategoryViewSet)
 from api.views.payment_views import PaymentViewSet
 router.register("payments", PaymentViewSet)
 
+# dev_10_fruit
+from api.views.product_views import ProductViewSet
+router.register("product-list", ProductViewSet)
+
 category_list = category_views.CategoryViewSet.as_view(
     {"get": "list", "post": "create"}
 )

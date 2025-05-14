@@ -5,6 +5,7 @@ import Login from '@/ui/components/login/Login'
 import Cart from '@/ui/components/fruits/Cart'
 import Hero from '@/ui/components/Hero'
 import CheckOut from '@/ui/components/fruits/CheckOut'
+import { Shop } from '@/ui/components/fruits/Shop'
 
 const routes = [
   {
@@ -44,6 +45,12 @@ const routes = [
         path: 'checkout',
         element: <CheckOut></CheckOut>,
         loader: () => '결제',
+      },
+      {
+        // dev_10_fruit
+        path: 'shop',
+        element: <Shop></Shop>,
+        loader: () => '샵',
       },
     ],
   },
