@@ -61,9 +61,15 @@ http.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const refresh = localStorage.getItem('refresh')
-        const res = await axios.post('http://127.0.0.1:8000/api/auth/jwt/refresh/', {
-          refresh: refresh,
+        // const refresh = localStorage.getItem('refresh')
+        // const res = await axios.post('http://127.0.0.1:8000/api/auth/jwt/refresh/', {
+        //   refresh: refresh,
+        // })
+
+        // 쿠키 기반이므로 refresh를 직접 꺼내지 않아도 됨
+        // refresh 토큰을 로컬 스토리지에 저장하지 않음
+        const res = await axios.post('http://127.0.0.1:8000/api/dj-rest-auth/token/refresh/', null, {
+          withCredentials: true,
         })
 
         const newAccess = res.data.access
