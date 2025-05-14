@@ -37,29 +37,30 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "store",  # dev_1
     "django.contrib.humanize",  # dev_5 쉼표(,)를 추가하여 통화 형식(₩1,000,000)으로 변환하는 방법
+    "store",  # dev_1
     "accounts",  # dev_9
-    "cart",  # dev_15 장바구니 앱
-    "orders",  # dev_24 주문 앱
-    "payment",  # dev_25 결제 앱
-    # dev_27 소셜 로그인
+    "cart",  # dev_15
+    "orders",  # dev_24
+    "payment",  # dev_26
+    # dev_27 소셜로그인
     "django.contrib.sites",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     # provider 추가 (추가로 다른 사이트도 하고 싶을 경우 뒤에 이름만 변경하면 됨)
-    #'allauth.socialaccount.providers.google', # 구글로그인 구현시 추가
+    #'allauth.socialaccount.providers.google', #구글로그인 구현시 추가
     "allauth.socialaccount.providers.kakao",  # 카카오로그인 구현시 추가
     #'allauth.socialaccount.providers.naver', # 네이버 로그인 구현시 추가
-    "rest_framework",  # dev_28
-    "api",  # dev_28
+    # dev_28
+    "rest_framework", #DRF 
+    "api",
     "corsheaders",  # dev_3_Fruit
-    "djoser", # dev_5_fruit
-    # dev_9_1 REST API 기반 소셜로그인
+    "djoser", # dev_5_Fruit
+    #dev_9_1_Fruit REST API 기반 소셜로그인
     "rest_framework.authtoken",
     "dj_rest_auth", # REST API 기반 소셜 로그인 모듈
-    "dj_rest_auth.registration", # 회원 가입 모듈
+    "dj_rest_auth.registration", #회원 가입 모듈
 ]
 
 MIDDLEWARE = [
@@ -76,10 +77,11 @@ MIDDLEWARE = [
 
 # dev_3_Fruit
 # 정확히 허용할 도메인만
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # 프론트 도메인
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",  # 프론트 도메인
+# ]
 CORS_ORIGIN_ALLOW_ALL = True  # 어떠한 출처든 상관없이 정보를 공유
+
 
 ROOT_URLCONF = "config.urls"
 
@@ -94,7 +96,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "cart.context_processors.cart",  # dev_17 cart(request)가 모든 템플릿에서 사용 가능해짐.
+                # dev_17 cart(request)가 모든 템플릿에서 사용 가능해짐.
+                "cart.context_processors.cart",
             ],
         },
     },
@@ -118,18 +121,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 
@@ -175,11 +178,11 @@ MEDIA_URL = "media/"  # ex) /media/photo1.png
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # dev_9
-# 다시 한 번 migrate를 해준다.
+# 다시 한번 migrate 시켜줘야함
 AUTH_USER_MODEL = "accounts.User"
 
-# dev_15 장바구니 앱
-CART_SESSION_ID = "cart"  # 장바구니 세션 ID
+# dev_15
+CART_SESSION_ID = "cart"
 
 # dev_27
 # 위에서 추가되어 있으므로
@@ -195,18 +198,20 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+
 # dev_27 소셜로그인 설정
 # 소셜 로그인 시 GET 요청만으로 로그인 처리를 허용
-# 사용자가 로그인 버튼을 클릭했을 때, redirect URL로 오는 GET 요청만으로도 자동 로그인
+# 사용자가 로그인 버튼을 클릭했을 때 redirect URI로 오는 GET 요청만으로도 자동 로그인
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = (
-    "/"  # 로그아웃 한 뒤에 어느 페이지로 redirect 할지 경로를 설정
+    "/"  # 로그아웃 한 뒤에 어느 페이지로 리다이렉트할지 경로를 설정
 )
 ACCOUNT_LOGOUT_ON_GET = True
 
 # dev_27 로그인후 리다이렉트
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
 
 # pip install python-decouple
 from decouple import config
@@ -224,10 +229,10 @@ SOCIALACCOUNT_PROVIDERS = {
         # 제공하는 값이 다르기 때문에 가져올 데이터를 설정한 이후 추가/삭제 해보면 됩니다.
         # SCOPE값에 제공하지 않는 값을 넣거나 하는 이유로 오류가 나올 수 있음
         "SCOPE": [
-            # dev_9_1_fruit
+            #dev_9_1_Fruit
             "account_email",
             "profile",
-            "gender"
+            "gender",
         ],
         # 추가
         "AUTH_PARAMS": {
@@ -237,41 +242,41 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# dev_5_fruit
-"""
-* 대략적인 구현
-class JWTAuthentication(BaseAuthentication):
-def authenticate(self, request):
-header = self.get_header(request)  # Authorization 헤더 추출
-raw_token = self.get_raw_token(header)  # "Bearer abc.def.ghi" → 토큰만 추출
-validated_token = self.get_validated_token(raw_token)  # 유효성 검사
-user = self.get_user(validated_token)  # payload에서 user_id를 추출 → User 객체
-return (user, validated_token)
+
+# dev_5_Fruit
+
+# 대략적인 구현
+# class JWTAuthentication(BaseAuthentication):
+#     def authenticate(self, request):
+#         header = self.get_header(request)  # Authorization 헤더 추출
+#         raw_token = self.get_raw_token(header)  # "Bearer abc.def.ghi" → 토큰만 추출
+#         validated_token = self.get_validated_token(raw_token)  # 유효성 검사
+#         user = self.get_user(validated_token)  # payload에서 user_id를 추출 → User 객체
+#         return (user, validated_token)
 
 #JWTAuthentication은 다음을 자동으로 처리
 #HTTP 요청의 Authorization 헤더에서 JWT 토큰을 추출
 #그 토큰을 디코딩해서 유효한지 검사
 #토큰에서 사용자 ID를 추출하고, 해당 사용자를 DB에서 가져옴
 #해당 사용자를 request.user에 할당
-#DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정  
-"""
+#DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정 
+    
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        # dev_9_2_fruit
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication", 
+        #"rest_framework_simplejwt.authentication.JWTAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication", #dev_9_2_Fruit
     ),
 }
 
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3), # timedalta (minutes=30) 
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=3), #timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "AUTH_HEADER_TYPES": ("Bearer",), # 헤더 이름을 JWT로 하면 Auth type을 JWT Bearer로 설정(postman)
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-# djoser 커스텀마이징 세팅
+# 도져(djoser) 커스텀마이징 세팅
 DJOSER = {
     "USER_ID_FIELD": "id",
     "LOGIN_FIELD": "username",  # 또는 email
@@ -284,24 +289,24 @@ DJOSER = {
 }
 
 # dev_9_1_Fruit
-# dj_rest_auth을 위한 세팅
-# adapter는 개발자가 만들어야 함 (커스텀 마이징)
+# dj_rest_auth 을 위한 세팅
 SOCIALACCOUNT_ADAPTER = "accounts.adapters.KakaoSocialAccountAdapter"
-# 3.0.0 버전 이상
+# 3.0.0버전 이상
+#dev_9_2_Fruit
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": True, #dev_9_2_Fruit
-    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token", #dev_9_2_Fruit
-    'SESSION_LOGIN' :False, #dev_9_2_Fruit 
-    'JWT_AUTH_SAMESITE': 'Lax',#dev_9_2_Fruit 
-    'JWT_AUTH_COOKIE_USE_CSRF' : False, #dev_9_2_Fruit
-    # 시리얼라이저 세팅
+    "JWT_AUTH_HTTPONLY": True, 
+    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token", 
+    'SESSION_LOGIN' :False, 
+    'JWT_AUTH_SAMESITE': 'Lax',
+    'JWT_AUTH_COOKIE_USE_CSRF' : False, 
+    #시리얼라이져 세팅
     'USER_DETAILS_SERIALIZER': "accounts.serializers.UserResAuthSerializer",
     'REGISTER_SERIALIZER': 'accounts.serializers.UserRegisterRestAuthSerializer',
 }
 
 # dev_9_2_Fruit
-# 브라우저는 axios의 withCredentials: true 요청 시 쿠키를 포함해 전송
+#브라우저는 axios의 withCredentials: true 요청 시 쿠키를 포함해 전송
 CORS_ALLOW_CREDENTIALS = True
 
 # 로그인 방식: 이메일로 로그인
@@ -314,3 +319,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"  # username을 필드로 씀
 ACCOUNT_EMAIL_VERIFICATION = "none"  # 개발 중에는 'none' 추천
 ACCOUNT_LOGOUT_ON_GET = True 
 SOCIALACCOUNT_LOGIN_ON_GET = True #브라우저에서 단순히 링크 클릭이나 리다이렉트로 로그아웃을 시킬 수 있게 하려면 GET 요청을 허용해야 함.
+
+# # 개발 환경이면 False, 운영이면 True
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
