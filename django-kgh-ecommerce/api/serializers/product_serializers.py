@@ -9,11 +9,9 @@ class ProductSimpleSerializer(serializers.ModelSerializer):
         model = Product
         fields = "__all__"
 
-
 class ProductSerializer(serializers.ModelSerializer):
     # dev_34 순환참조 방지(lazy loading)
     from api.serializers.category_serializers import CategorySimpleSerializer
-
     category = CategorySimpleSerializer()
 
     class Meta:

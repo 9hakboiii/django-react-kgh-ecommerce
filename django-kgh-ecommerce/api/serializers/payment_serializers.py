@@ -4,7 +4,7 @@ from store.models import Category, Product
 from payment.models import Payment
 from orders.models import ShippingAddress
 
-#dev_8_Fruit
+#dev_8_2_Fruit
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
