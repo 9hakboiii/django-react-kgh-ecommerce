@@ -9,7 +9,8 @@ const Products = () => {
   //dev_4_Fruit
   const [selectedCategory, setSelectedCategory] = useState('전체')
   const [products, setProducts] = useState([])
-  // dev_6_Fruit
+
+  //dev_6_Fruit
   const { addToCart } = useCart()
 
   useEffect(() => {
@@ -36,12 +37,13 @@ const Products = () => {
       })
   }, [])
 
-  //filter 함수의 리턴값은 배열임
-  const filterProuct =
+  //filter 함수의 리턴값을 배열임
+  const filterProucts =
     selectedCategory == '전체'
       ? products.filter((product) => product.image != null)
       : products.filter((product) => product.category.name == selectedCategory && product.image)
 
+  products.filter((product) => product.category.name == selectedCategory && product.image)
   return (
     <>
       {/* Fruits Shop Start*/}
@@ -70,6 +72,7 @@ const Products = () => {
                   </li>
 
                   {categories &&
+                    Array.isArray(categories) &&
                     categories.map((category, index) => (
                       <li className="nav-item">
                         <a
@@ -91,15 +94,15 @@ const Products = () => {
               </div>
             </div>
             <div className="tab-content">
-              <div id="tab-1" className="tab-pane fade show p-0 active">
+              <div className="tab-pane fade show p-0 active">
                 <div className="row g-4">
                   <div className="col-lg-12">
                     <div className="row g-4">
-                      {/* dev_4_fruit */}
-                      {filterProuct.map((product) => (
-                        <div key={products.id} className="col-md-6 col-lg-4 col-xl-3">
+                      {/* dev_4_Fruit */}
+                      {filterProucts.map((product) => (
+                        <div key={product.id} className="col-md-6 col-lg-4 col-xl-3">
                           <div className="rounded position-relative fruite-item">
-                            <div className="fruite-img ratio ratio-4x3 overflow-hidden rounded-top ">
+                            <div className="fruite-img ratio ratio-4x3 overflow-hidden rounded-top">
                               <img
                                 src={`${import.meta.env.VITE_REQUEST_URL}${product.image}`}
                                 className="img-fluid w-100 rounded-top"
@@ -117,9 +120,10 @@ const Products = () => {
                               <p>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt
                               </p>
+                              {/* dev_4_Fruit */}
                               <div className="d-flex flex-column align-items-center justify-content-between flex-lg-wrap">
                                 <p className="text-dark fs-5 fw-bold mb-2">${product.price} / kg</p>
-                                {/* dev_6_fruit */}
+                                {/* dev_6_Fruit */}
                                 <button
                                   onClick={() => addToCart(product)}
                                   className="btn border border-secondary rounded-pill px-3 text-primary"
