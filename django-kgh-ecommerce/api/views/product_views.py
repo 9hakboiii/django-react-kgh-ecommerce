@@ -123,15 +123,15 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = ProductPagination
 
-    #  추가
-    filterset_class = ProductFilter
-    # 필터링 항목 (URL에서 ?category=값 으로 필터링 가능)
-    filterset_fields = ['category']
-
     # 정렬/검색
     # 요청을 가로채서 필터셋(filterset_class)을 확인
     # 정의된 필드와 비교해 유효한 필터만 추출
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+
+    #  추가
+    filterset_class = ProductFilter
+    # 필터링 항목 (URL에서 ?category=값 으로 필터링 가능)
+    filterset_fields = ['category']
 
     # 정렬 필드 (?ordering=price: 오름차순 | ?ordering=-price: 내림차순)
     ordering_fields = ['id', 'price', 'name']
