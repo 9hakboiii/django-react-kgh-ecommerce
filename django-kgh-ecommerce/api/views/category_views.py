@@ -5,6 +5,9 @@ from store.models import Category
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 
+from rest_framework.decorators import action
+from rest_framework import filters
+
 # dev_32
 from api.serializers.category_serializers import (
     CategorySerializer,
@@ -244,11 +247,11 @@ from rest_framework.viewsets import ModelViewSet
 # partial_update - PATCH /
 # destroy - DELETE /
 
-from rest_framework.decorators import action
-from rest_framework import filters
 
 #dev_3_Fruit
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = CategorySimpleSerializer
+    # serializer_class = CategorySimpleSerializer
+    serializer_class = CategorySerializer # dev_10_fruit
+
 

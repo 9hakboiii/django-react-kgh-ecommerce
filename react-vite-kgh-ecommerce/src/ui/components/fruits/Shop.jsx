@@ -1,15 +1,30 @@
+import { getCategories } from '@/api/CategoryApi'
 import { useShop } from '@/contexts/ShopContext'
-import React, { useEffect } from 'react'
-import { formatCurrencyWithWon } from '@/utils/format'
+import { useEffect, useState } from 'react'
 
-export const Shop = () => {
-  const { setSearch, products, setOrdering } = useShop()
+//dev_10_Fruit
+const Shop = () => {
+  const { setSearch, products, setOdering } = useShop()
+  //categories = null
+  const [categories, setCategories] = useState([])
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value)
+  //동기화 지원 안함
+  useEffect(() => {
+    //http://localhost:8000/api/categories/
+
+    getCategories()
+      .then((res) => {
+        setCategories(res.data)
+        console.log(res.data)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value)
   }
-  const handleOrderingChange = (e) => {
-    setOrdering(e.target.value)
+  const handleOrderingChange = (event) => {
+    setOdering(event.target.value)
   }
 
   return (
@@ -37,7 +52,6 @@ export const Shop = () => {
               <div className="row g-4">
                 <div className="col-xl-3">
                   <div className="input-group w-100 mx-auto d-flex">
-                    {/* dev_10_fruit */}
                     <input
                       type="search"
                       className="form-control p-3"
@@ -53,7 +67,7 @@ export const Shop = () => {
                 <div className="col-6" />
                 <div className="col-xl-3">
                   <div className="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                    <label htmlFor="fruits">정렬 선택</label>
+                    <label htmlFor="fruits">정렬 선택:</label>
                     <select
                       id="fruits"
                       name="fruitlist"
@@ -65,7 +79,7 @@ export const Shop = () => {
                       <option value="price">가격 낮은순</option>
                       <option value="-price">가격 높은순</option>
                       <option value="id">등록순</option>
-                      <option value="-id">최신등록순</option>
+                      <option value="-id">최신순</option>
                     </select>
                   </div>
                 </div>
@@ -77,51 +91,18 @@ export const Shop = () => {
                       <div className="mb-3">
                         <h4>Categories</h4>
                         <ul className="list-unstyled fruite-categorie">
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#">
-                                <i className="fas fa-apple-alt me-2" />
-                                Apples
-                              </a>
-                              <span>(3)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#">
-                                <i className="fas fa-apple-alt me-2" />
-                                Oranges
-                              </a>
-                              <span>(5)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#">
-                                <i className="fas fa-apple-alt me-2" />
-                                Strawbery
-                              </a>
-                              <span>(2)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#">
-                                <i className="fas fa-apple-alt me-2" />
-                                Banana
-                              </a>
-                              <span>(8)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#">
-                                <i className="fas fa-apple-alt me-2" />
-                                Pumpkin
-                              </a>
-                              <span>(5)</span>
-                            </div>
-                          </li>
+                          {categories &&
+                            categories.map((category, index) => (
+                              <li key={index}>
+                                <div className="d-flex justify-content-between fruite-name">
+                                  <a href="#">
+                                    <i className="fas fa-apple-alt me-2" />
+                                    {category.name}
+                                  </a>
+                                  <span>({category.products.length})</span>
+                                </div>
+                              </li>
+                            ))}
                         </ul>
                       </div>
                     </div>
@@ -282,11 +263,10 @@ export const Shop = () => {
                     </div>
                   </div>
                 </div>
-                {/* dev_10_shop */}
                 <div className="col-lg-9">
                   <div className="row g-4 justify-content-center">
                     {products &&
-                      products.map((product, index) => (
+                      products.map((product) => (
                         <div key={product.id} className="col-md-6 col-lg-6 col-xl-4">
                           <div className="rounded position-relative fruite-item">
                             <div className="fruite-img ratio ratio-4x3 overflow-hidden rounded-top">
@@ -302,7 +282,7 @@ export const Shop = () => {
                               <h4 className="text-center">{product.name}</h4>
                               <p>{product.description}</p>
                               <div className="d-flex justify-content-between flex-lg-wrap">
-                                <p className="text-dark fs-5 fw-bold mb-0">{formatCurrencyWithWon(product.price)}</p>
+                                <p className="text-dark fs-5 fw-bold mb-0">${product.price} 원</p>
                                 <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
                                   <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart
                                 </a>
@@ -311,6 +291,7 @@ export const Shop = () => {
                           </div>
                         </div>
                       ))}
+
                     <div className="col-12">
                       <div className="pagination d-flex justify-content-center mt-5">
                         <a href="#" className="rounded">
@@ -347,7 +328,6 @@ export const Shop = () => {
         </div>
       </div>
       {/* Fruits Shop End*/}
-
       {/* Back to Top */}
       <a href="#" className="btn btn-primary border-3 border-primary rounded-circle back-to-top">
         <i className="fa fa-arrow-up" />
@@ -357,3 +337,5 @@ export const Shop = () => {
     </>
   )
 }
+
+export default Shop
