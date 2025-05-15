@@ -1,11 +1,15 @@
 import { useShop } from '@/contexts/ShopContext'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { formatCurrencyWithWon } from '@/utils/format'
 
 export const Shop = () => {
-  const { setSearch } = useShop()
+  const { setSearch, products, setOrdering } = useShop()
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value)
+  }
+  const handleOrderingChange = (e) => {
+    setOrdering(e.target.value)
   }
 
   return (
@@ -49,17 +53,19 @@ export const Shop = () => {
                 <div className="col-6" />
                 <div className="col-xl-3">
                   <div className="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                    <label htmlFor="fruits">Default Sorting:</label>
+                    <label htmlFor="fruits">정렬 선택</label>
                     <select
                       id="fruits"
                       name="fruitlist"
                       className="border-0 form-select-sm bg-light me-3"
                       form="fruitform"
+                      onChange={handleOrderingChange}
                     >
-                      <option value="volvo">Nothing</option>
-                      <option value="saab">Popularity</option>
-                      <option value="opel">Organic</option>
-                      <option value="audi">Fantastic</option>
+                      <option value="volvo">정렬선택</option>
+                      <option value="price">가격 낮은순</option>
+                      <option value="-price">가격 높은순</option>
+                      <option value="id">등록순</option>
+                      <option value="-id">최신등록순</option>
                     </select>
                   </div>
                 </div>
@@ -279,29 +285,32 @@ export const Shop = () => {
                 {/* dev_10_shop */}
                 <div className="col-lg-9">
                   <div className="row g-4 justify-content-center">
-                    <div className="col-md-6 col-lg-6 col-xl-4">
-                      <div className="rounded position-relative fruite-item">
-                        <div className="fruite-img">
-                          <img src="img/fruite-item-5.jpg" className="img-fluid w-100 rounded-top" alt="" />
-                        </div>
-                        <div
-                          className="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                          style={{ top: 10, left: 10 }}
-                        >
-                          Fruits
-                        </div>
-                        <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                          <h4>Grapes</h4>
-                          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                          <div className="d-flex justify-content-between flex-lg-wrap">
-                            <p className="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                            <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
-                              <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart
-                            </a>
+                    {products &&
+                      products.map((product, index) => (
+                        <div key={product.id} className="col-md-6 col-lg-6 col-xl-4">
+                          <div className="rounded position-relative fruite-item">
+                            <div className="fruite-img ratio ratio-4x3 overflow-hidden rounded-top">
+                              <img src={`${product.image}`} className="img-fluid w-100 rounded-top" alt="" />
+                            </div>
+                            <div
+                              className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                              style={{ top: 10, left: 10 }}
+                            >
+                              {product.category.name}
+                            </div>
+                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                              <h4 className="text-center">{product.name}</h4>
+                              <p>{product.description}</p>
+                              <div className="d-flex justify-content-between flex-lg-wrap">
+                                <p className="text-dark fs-5 fw-bold mb-0">{formatCurrencyWithWon(product.price)}</p>
+                                <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
+                                  <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      ))}
                     <div className="col-12">
                       <div className="pagination d-flex justify-content-center mt-5">
                         <a href="#" className="rounded">

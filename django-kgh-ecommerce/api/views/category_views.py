@@ -54,7 +54,7 @@ class CategoriesAPI(APIView):
 class CategoryAPI(APIView):
 
     def get(self, request, pk):
-        category = _or_404(Category, id=pk)
+        category = get_object_or_404(Category, id=pk)
         serializer = CategorySimpleSerializer(category)
         return Response(serializer.data)
 

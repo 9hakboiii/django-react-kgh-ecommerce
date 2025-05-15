@@ -5,9 +5,9 @@ export const getProducts = () => {
   return http.get('/api/products/')
 }
 
-export const getProductsPaging = ({ page = 1, search = '' }) => {
-  const params = { page, search }
+export const getProductsPaging = ({ page = 1, search = '', page_size = 12, ordering = '' }) => {
+  const params = { page, search, page_size, ordering }
 
-  // api/product-list/?page=1&search='paraps'
+  // api/product-list/?page=1&search='paraps'&ordering=-id
   return http.get('/api/product-list/', { params })
 }

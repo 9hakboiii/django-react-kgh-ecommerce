@@ -10,6 +10,7 @@ export const ShopProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [products, setProducts] = useState([])
   const [search, setSearch] = useState('')
+  const [ordering, setOrdering] = useState('')
 
   // 상품 목록 호출
   const fetchProducts = async () => {
@@ -17,6 +18,7 @@ export const ShopProvider = ({ children }) => {
       const response = await getProductsPaging({
         page: currentPage,
         search, // ES6 이후부터 key:value의 이름이 같으면, key만 입력해도 됨
+        ordering,
       })
       console.log(response.data)
       setProducts(response.data.results)
@@ -28,13 +30,16 @@ export const ShopProvider = ({ children }) => {
   // 조건이 변경될때 마다 API 다시 호출
   useEffect(() => {
     fetchProducts()
-  }, [currentPage, search])
+  }, [currentPage, search, ordering])
 
   const value = {
     search,
     setSearch,
     currentPage,
     setCurrentPage,
+    products,
+    setProducts,
+    setOrdering,
   }
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>
