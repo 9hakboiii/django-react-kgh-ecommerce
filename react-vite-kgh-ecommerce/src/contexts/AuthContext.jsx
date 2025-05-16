@@ -15,14 +15,8 @@ export const AuthProvider = ({ children }) => {
       const response = await loginUser(username, password)
       const { access, refresh } = response.data
 
-      // 저장 영역은 크게 4가지로 나뉜다.
-      // 1. local storage : 브라우저를 닫아도 데이터가 남아있음. (영구적) > 현업에선 local storage를 많이 사용함.
-      //    - local storage는 보안에 취약하기 때문에 민감한 데이터는 저장하지 않는 것이 좋음.
-      //    - local storage는 도메인 단위로 저장되기 때문에, 같은 도메인에서만 접근 가능함.
-      // 2. session storage : 브라우저를 닫으면 데이터가 사라짐. (임시적)
-      // 3. cookie : 서버와 클라이언트가 공유하는 데이터. (영구적)
-      // 4. memory : 메모리에 저장되는 데이터. (임시적)
-
+      //저장 영역은 크게 4 가지 정도 있음
+      //1.local storage 2.session storage 3.cookie
       localStorage.setItem('access', access)
       localStorage.setItem('refresh', refresh)
       setAccessToken(access)
@@ -53,8 +47,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('access')
     localStorage.removeItem('refresh')
 
-    // dev_7_fruit
-    localStorage.removeItem('cart')
+    //dev_7_Fruit
+    //localStorage.removeItem("cart");
   }
 
   const value = {
@@ -62,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     login,
     accessToken,
     user,
-    getUser, // dev_9_1
+    getUser, //dev_9_1_Fruit
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
