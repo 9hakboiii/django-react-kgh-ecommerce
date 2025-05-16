@@ -12,6 +12,6 @@ from dj_rest_auth.registration.views import SocialLoginView
 # 6. adapter.save_user()
 # 7. login(request, user)
 
-#dev_9_1
+#dev_9_1_Fruit
 class KakaoLoginView(SocialLoginView):
     adapter_class = KakaoOAuth2Adapter

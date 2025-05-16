@@ -1,5 +1,6 @@
-import json
+from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+import json
 
 # Create your views here.
 
@@ -14,6 +15,7 @@ from django.http import HttpResponse, JsonResponse
 
 
 # def hello_world_json(request):
+
 #     response_data = {}
 #     response_data["error"] = "error"
 #     response_data["details"] = "헬로월드 에러입니다."
@@ -27,4 +29,4 @@ from django.http import HttpResponse, JsonResponse
 
 # @api_view(["GET"])
 # def hello_world_drf(request):
-#     return Response({"message": "Hello World!"})
+#     return Response({"message": "Hello World!"}) # 테스트용 템플릿도 포함됨

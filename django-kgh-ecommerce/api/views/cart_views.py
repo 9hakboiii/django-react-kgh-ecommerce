@@ -76,10 +76,7 @@ class CartAPIView(APIView):
             return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
         
         except Product.DoesNotExist:
-                return Response({"error": "상품이 존재하지 않습니다."}, status=404)
-
-
-         
+                return Response({"error": "상품이 존재하지 않습니다."}, status=404)         
     
     def put(self,request):
         pass
@@ -142,3 +139,7 @@ class CartMergeAPIView(APIView):
         user.save()
 
         return Response({"message": "장바구니가 병합되었습니다."})
+
+
+
+

@@ -5,9 +5,6 @@ from store.models import Category
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 
-from rest_framework.decorators import action
-from rest_framework import filters
-
 # dev_32
 from api.serializers.category_serializers import (
     CategorySerializer,
@@ -189,10 +186,10 @@ class CategoryGenericView(RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
 
         instance = self.get_object()
-        print(f'수정 카테고리 이름 {instance.name} -> {request.data.get("name")}')
+        print(f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}")
         respose = super().update(request, *args, **kwargs)  # update 쿼리 날아감
         respose.data = {
-            "message": f'수정 카테고리 이름 {instance.name} -> {request.data.get("name")}',
+            "message": f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}",
             "category": respose.data,
         }
 
@@ -247,11 +244,13 @@ from rest_framework.viewsets import ModelViewSet
 # partial_update - PATCH /
 # destroy - DELETE /
 
+from rest_framework.decorators import action
+from rest_framework import filters
 
 #dev_3_Fruit
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
-    # serializer_class = CategorySimpleSerializer
-    serializer_class = CategorySerializer # dev_10_fruit
-
+    #serializer_class = CategorySimpleSerializer
+    #dev_10_Fruit
+    serializer_class = CategorySerializer
 

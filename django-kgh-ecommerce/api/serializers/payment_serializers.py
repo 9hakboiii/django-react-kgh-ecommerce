@@ -15,5 +15,3 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
         exclude = ["user","order"]
-    
-

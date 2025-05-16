@@ -2,6 +2,7 @@ from rest_framework import serializers
 from store.models import Category, Product
 
 
+
 # dev_34
 # nested 전용 시리얼 라이져
 class ProductSimpleSerializer(serializers.ModelSerializer):
