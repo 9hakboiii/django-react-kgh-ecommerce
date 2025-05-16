@@ -186,10 +186,10 @@ class CategoryGenericView(RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
 
         instance = self.get_object()
-        print(f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}")
+        print(f"수정 카테고리 이름 {instance.name} -> {request.data.get('name')}")
         respose = super().update(request, *args, **kwargs)  # update 쿼리 날아감
         respose.data = {
-            "message": f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}",
+            "message": f"수정 카테고리 이름 {instance.name} -> {request.data.get('name')}",
             "category": respose.data,
         }
 
