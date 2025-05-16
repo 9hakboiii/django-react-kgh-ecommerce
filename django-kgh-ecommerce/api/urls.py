@@ -14,7 +14,7 @@ app_name = "api"
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r"categories", category_views.CategoryViewSet)
+router.register("categories", category_views.CategoryViewSet)
 
 category_list = category_views.CategoryViewSet.as_view(
     {"get": "list", "post": "create"}

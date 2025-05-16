@@ -174,26 +174,17 @@ class Cart:  # 카트 클래스 생성
  # "33": {"quantity": 1, "price": "12000.00"}
  # }
 class CartDRF:
-
+    
     def __init__(self,reqeust):
         self.request = reqeust
-
-    #상품 전제 삭제 메서드
-    def remove_from_old_cart(self,user,proudct_id):
-        old_cart = user.old_cart or "{}"
-        cart = json.loads(old_cart)
-
-        proudct_id = str(proudct_id)
-
-        if proudct_id in cart:
-            del cart[proudct_id]
-            user.old_cart = json.dumps(cart)
-            user.save()
-
-        
-    # 상품 추가 메서드
-    def add_to_old_cart(self, user, product_id, price, quantity):
-        
+    
+    def add_to_old_cart(self,user,product_id,price,quantity=1):
+        """
+        사용자의 old_cart에 상품을 추가합니다.
+        product_id: str or int
+        price: Decimal 또는 str
+        quantity: int
+        """
         # 기존 cart 불러오기 (없으면 빈 dict)
         old_cart = user.old_cart or "{}"
         cart = json.loads(old_cart)
@@ -208,8 +199,20 @@ class CartDRF:
             cart[product_id] = {
                 "quantity": quantity,
                 "price": price,
-            } 
-
-        # 다시 json 형태로 변환
+            }
+        
+        # 다시 JSON 문자열로 저장
         user.old_cart = json.dumps(cart)
         user.save()
+
+    #상품 전제 삭제 메서드
+    def remove_from_old_cart(self,user,proudct_id):
+        old_cart = user.old_cart or "{}"
+        cart = json.loads(old_cart)
+
+        proudct_id = str(proudct_id)
+        
+        if proudct_id in cart:
+            del cart[proudct_id]
+            user.old_cart = json.dumps(cart)
+            user.save()
