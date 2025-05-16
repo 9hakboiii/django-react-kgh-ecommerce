@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 //dev_10_Fruit
 const Shop = () => {
-  const { setSearch, products, setOdering } = useShop()
+  const { setSearch, products, setOdering, setCategory } = useShop()
   //categories = null
   const [categories, setCategories] = useState([])
 
@@ -20,11 +20,16 @@ const Shop = () => {
       .catch((err) => console.log(err))
   }, [])
 
+  //"GET /api/product-list/?page=1&search=&ordering=price&category=37&page_size=12 HTTP/1.1"
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
   const handleOrderingChange = (event) => {
     setOdering(event.target.value)
+  }
+
+  const handleCategoryClick = (categoryId) => {
+    setCategory(categoryId)
   }
 
   return (
@@ -92,10 +97,15 @@ const Shop = () => {
                         <h4>Categories</h4>
                         <ul className="list-unstyled fruite-categorie">
                           {categories &&
-                            categories.map((category, index) => (
+                            categories?.map((category, index) => (
                               <li key={index}>
-                                <div className="d-flex justify-content-between fruite-name">
-                                  <a href="#">
+                                {/* style={{ cursor: 'pointer' }}  // 클릭 가능한 UI */}
+                                <div
+                                  onClick={() => handleCategoryClick(category.id)}
+                                  style={{ cursor: 'pointer' }}
+                                  className="d-flex justify-content-between fruite-name"
+                                >
+                                  <a href="#" onClick={(e) => e.preventDefault()}>
                                     <i className="fas fa-apple-alt me-2" />
                                     {category.name}
                                   </a>
