@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from store.models import Product, Category
+from rest_framework.decorators import action
+from django.db.models import Max
 
 # dev_34
 from api.serializers.product_serializers import ProductSerializer
@@ -159,3 +161,19 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     # 검색 필드 (?search=아이폰)
     #Product.objects.filter(name__icontains='컴퓨터')
     search_fields = ['name','description'] # 필요에 따라 수정 가능
+
+    # dev_10_fruit
+    # ViewSet에서 URL 추가
+    # action 데코레이터를 사용해서 커스텀 url을 만듦
+    # detail=True /api/product-list/<pk>/custom/ 특정 객체에 대해 작동 (PK 필요)
+    # detail-False /api/priduct-list/max_price/ 전체 또는 리스트 대상  (PK 불필요)
+    @action(detail=False, methods=['get'], url_path='max-price')
+    def max_price(self, request):
+        #aggregate 집계 함수
+        # select max(price) as pricemax from product
+        # { pricemax : null}
+
+        #result = Product.objects.aggregate(Max('price'))
+        #max_price = result['pricemax']
+        max_price = Product.objects.aggregate(Max('price'))['price_max'] or 0
+        return Response({'max_price': max_price})

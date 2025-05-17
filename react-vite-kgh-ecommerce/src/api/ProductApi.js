@@ -12,7 +12,15 @@ export const getProducts = () => {
   return http.get('/api/products/')
 }
 
-export const getProductsPaging = ({ page = 1, search = '', ordering = '', category = '', page_size = 12 }) => {
+export const getProductsPaging = ({
+  page = 1,
+  search = '',
+  ordering = '',
+  category = '',
+  min_price = 0,
+  max_price = null,
+  page_size = 12,
+}) => {
   const params = {
     page,
     search,
@@ -20,6 +28,15 @@ export const getProductsPaging = ({ page = 1, search = '', ordering = '', catego
     category,
     page_size,
   }
+
+  if (min_price != null) params.min_price = min_price
+
+  if (max_price != null) params.max_price = max_price
+
   //api/product-list/?page=1&search=컴퓨터&ordering=-id&category=1
   return http.get('/api/product-list/', { params })
+}
+
+export const getProductMaxPrice = () => {
+  return http.get('/api/product-list/max-price/')
 }
