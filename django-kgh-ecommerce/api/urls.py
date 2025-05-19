@@ -3,7 +3,6 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 # dev_28
 # from api.views import hello_world, hello_world_json, hello_world_drf
 from .views import base_views, product_views, category_views,cart_views,social_views

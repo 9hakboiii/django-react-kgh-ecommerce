@@ -67,8 +67,26 @@ def products_api(request):
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 
+# dev_11_fruit
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 # dev_30
+# dev_11_fruit
+@extend_schema(
+    tags=['추가 API 설명'],
+    methods=['GET'], # 이 데코레이터를 적용할 HTTP 메서드
+    summary='상품들을 조회', # API 요약 설명
+    description='상품의 리스트를 조회하는 API입니다.', # API 상세 설명
+    responses={200: ProductSerializer(many=True)}, # 응답 스키마
+)
+@extend_schema(
+    tags=['추가 API 설명'],
+    methods=['PUT'], # 이 데코레이터를 적용할 HTTP 메서드
+    summary='상품들을 수정', # API 요약 설명
+    description='상품을 수정하는 API입니다.', # API 상세 설명
+    responses={200: ProductSerializer(many=False)}, # 응답 스키마
+)
+
 @api_view(["GET", "DELETE", "PUT"])
 def product_api(request, pk):
     product = get_object_or_404(Product, id=pk)
@@ -134,7 +152,17 @@ class ProductFilter(django_filters.FilterSet):
         model = Product
         fields = ['category', 'min_price', 'max_price']   
 
-
+# dev_11_fruit
+@extend_schema_view(
+    list=extend_schema(
+        tags=['product-list_view'],
+        description='extend_schema_view 예제 입니다.'
+    ),
+    create=extend_schema(
+        tags=['product-list_view'],
+        description='새로운 예시 항목을 표시'
+    )
+)
 # ModelViewSet
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()

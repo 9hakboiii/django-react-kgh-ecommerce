@@ -28,7 +28,7 @@ class UserSerializer(BaseUserSerializer):
             "gender",
             "job",
             "old_cart",
-            "creatd_at",
+            "created_at",
             "updated_at",
         )
 

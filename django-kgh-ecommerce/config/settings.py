@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "dj_rest_auth", # REST API 기반 소셜 로그인 모듈
     "dj_rest_auth.registration", #회원 가입 모듈
+    "drf_spectacular",#dev_11_Fruit
 ]
 
 MIDDLEWARE = [
@@ -261,18 +262,16 @@ SOCIALACCOUNT_PROVIDERS = {
 #해당 사용자를 request.user에 할당
 #DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정 
 
+#http://127.0.0.1:8000/api/product-list/?page=2
+#http://127.0.0.1:8000/api/categories/?page=1
 
-# dev_10_fruit
-# http://127.0.0.1:8000/api/product-list/?page=2
-
-# Django_REST_Framework
+# Django REST Framework (DRF) 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
     "DEFAULT_AUTHENTICATION_CLASSES": (
         #"rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication", #dev_9_2_Fruit
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",#dev_11_Fruit
 }
 
 from datetime import timedelta
@@ -330,3 +329,32 @@ SOCIALACCOUNT_LOGIN_ON_GET = True #브라우저에서 단순히 링크 클릭이
 # # 개발 환경이면 False, 운영이면 True
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
+
+#dev_11_Fruit
+SPECTACULAR_SETTINGS = {
+    # General schema metadata. Refer to spec for valid inputs
+    # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#openapi-object
+    'TITLE': '쇼핑몰 API Document',
+    'DESCRIPTION': '이 문서는 쇼핑몰과 관련 API 문서입니다.',
+    'SWAGGER_UI_SETTINGS': {
+        'dom_id': '#swagger-ui',
+        'layout': 'BaseLayout', 
+        'deepLinking': True,  
+        'displayOperationId': True,
+        'filter': True,
+    },
+   
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    'SWAGGER_UI_DIST': '//unpkg.com/swagger-ui-dist@3.38.0',
+
+    'CONTACT': {
+        'name': 'John Doe',
+        'email': 'johndoe@example.com',
+        'url': 'https://www.example.com',
+    }
+}
