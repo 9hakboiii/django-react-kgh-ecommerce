@@ -34,8 +34,8 @@ class User(AbstractUser):
     # 생성과 수정 시각을 자동으로 저장하는 필드이다.
     # auto_now_add는 객체가 처음 생성될 때의 시각을 저장한다.
     # auto_now는 객체가 수정될 때의 시각을 저장한다.
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # dev_23
     # 장바구니 정보를 db에 저장 (session에 저장하는 것과는 다름)
