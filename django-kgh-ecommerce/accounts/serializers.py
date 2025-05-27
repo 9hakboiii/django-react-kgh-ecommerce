@@ -34,6 +34,7 @@ class UserSerializer(BaseUserSerializer):
         )
 
 # dev_9_2_fruit
+# 로그인 했을 때, 커스텀 필드로 표시
 class UserResAuthSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

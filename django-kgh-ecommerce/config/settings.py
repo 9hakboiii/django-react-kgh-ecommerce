@@ -310,10 +310,11 @@ REST_AUTH = {
 CORS_ALLOW_CREDENTIALS = True
 
 # 로그인 방식: 이메일로 로그인
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_USERNAME_REQUIRED = False  # username 필요 없음
-ACCOUNT_EMAIL_REQUIRED = True  # 이메일 필수
-ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"  # username을 필드로 씀
+ACCOUNT_AUTHENTICATION_METHOD = "username_email" # 사용자가 username 또는 email을 이용해 로그인할 수 있도록 설정합니다.
+ACCOUNT_USERNAME_REQUIRED = False  # 회원가입 시 username 필드를 필수로 요구하지 않도록 설정합니다.
+ACCOUNT_EMAIL_REQUIRED = True  # 회원가입 시 email 필드를 필수로 요구하도록 설정합니다.
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username" # User 모델에서 username 필드가 존재하는 경우 이를 사용할 수 있도록 설정합니다.
+
 
 # 이메일 인증 건너뛰기 (선택)
 ACCOUNT_EMAIL_VERIFICATION = "none"  # 개발 중에는 'none' 추천
